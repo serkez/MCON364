@@ -132,15 +132,32 @@ public class Sort {
             System.out.println();
             System.out.println("List sorted with quickSort: ");
             System.out.println(sortedWithQuick);
-
+            System.out.println("Validating results:");
+            if(testResults(sortedWithQuick))
+                System.out.println("Validation passed");
+            else
+                System.out.println("Validation failed");
             System.out.println();
             System.out.println("***Starting mergeSort***");
             Sort.mergeSort(sortedWithMerge, sortedWithMerge.size());
             System.out.println();
             System.out.println("List sorted with mergeSort: ");
-            System.out.println(sortedWithQuick);
+            System.out.println(sortedWithMerge);
+            System.out.println("Validating results:");
+            if(testResults(sortedWithMerge))
+                System.out.println("Validation passed");
+            else
+                System.out.println("Validation failed");
         } catch (NumberFormatException e) {
             System.out.println("Not a valid number");
         }
+    }
+    //this method validates the results of the sorting methods
+    public static boolean testResults(ArrayList<Student> list) {
+        for (int i = 1; i < list.size(); i++) {
+            if(list.get(i-1).getGrade() > list.get(i).getGrade())
+                return false;
+        }
+        return true;
     }
 }

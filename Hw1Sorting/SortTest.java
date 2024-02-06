@@ -96,5 +96,20 @@ class SortTest {
         Sort.mergeSort(actual, actual.size());
         assertEquals(expected, actual);
     }
-
+    @Test
+    void validation() {
+        boolean expected = false;
+        Student a = new Student("a", 90);
+        Student b = new Student("b", 85);
+        Student c = new Student("c", 97);
+        Student d = new Student("d", 85);
+        Student e = new Student("e", 76);
+        ArrayList<Student> list= new ArrayList<>();
+        list.add(a);
+        list.add(b);
+        list.add(c);
+        list.add(d);
+        list.add(e);
+        assertEquals(expected, Sort.testResults(list));
+    }
 }
