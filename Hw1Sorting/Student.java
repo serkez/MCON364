@@ -3,8 +3,8 @@ package Hw1Sorting;
 //2.2024
 //this class contains the Student object class
 public class Student implements Comparable<Student> {
-    private String name;
-    private int grade;
+    private final String name;
+    private final int grade;
     //constructor
     public Student(String name, int grade) {
         this.name = name;
