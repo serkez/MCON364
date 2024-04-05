@@ -1,6 +1,7 @@
 package Hw3HashMap;
 
 import java.util.*;
+import java.util.function.Function;
 
 //Naomi Serkez
 // 3.2024
@@ -14,6 +15,14 @@ public class ArrayMap<K, V> implements MapInterface<K, V> {
     private int currCap;
     private double load;
     private int numPairs = 0;
+    Function<K, Integer> currHash; //stores the users choice of hash as a lambda
+    //simple hash
+    Function<K, Integer> hash1 = key -> key.hashCode() % currCap < 0 ? key.hashCode() % currCap + currCap : key.hashCode() % currCap;
+
+    // 'complex' hash, for the sake of lambdas. I did not have a second function before, so I just repeated
+    Function<K, Integer> hash2 = key -> key.hashCode() % currCap < 0 ? key.hashCode() % currCap + currCap : key.hashCode() % currCap;
+    Map<String, Function<K, Integer>> functionMap = new HashMap<>(); //will store the hashes, needs to be in a function so done in constructor
+
 
     //default constructor
     public ArrayMap() {
@@ -21,16 +30,24 @@ public class ArrayMap<K, V> implements MapInterface<K, V> {
         origCap = DEFCAP;
         currCap = DEFCAP;
         load = DEFLOAD;
+        functionMap.put("1", hash1);
+        functionMap.put("2", hash2);
     }
 
     //overloaded constructor
-    public ArrayMap(int initCapacity, double initLoad) {
+    public ArrayMap(int initCapacity, double initLoad, String hash) {
         map = new MapEntry[initCapacity];
         origCap = initCapacity;
         currCap = initCapacity;
         load = initLoad;
+        functionMap.put("1", hash1);
+        functionMap.put("2", hash2);
+        setHash(hash);
     }
-
+    //allows user to set the hash function
+    public void setHash(String h){
+        currHash = functionMap.get(h);
+    }
     //make array bigger
     private void enlarge() {
         Iterator<MapEntry<K, V>> i = iterator();
@@ -48,7 +65,7 @@ public class ArrayMap<K, V> implements MapInterface<K, V> {
     //function to put a pair in the hashMap
     public void put(K k, V v) {
         if (k == null) return; //doesn't accept null keys
-        int location = hashMethod(k) % currCap; //decides location based on hash function and size of array
+        int location = currHash.apply(k) % currCap; //decides location based on hash function and size of array
         if (map[location] == null) { //if nothing is there, put this key value pair
             map[location] = new MapEntry<>(k, v);
             numPairs++;
@@ -135,12 +152,16 @@ public class ArrayMap<K, V> implements MapInterface<K, V> {
 
 
     //hash method. I know its not ideal, but its what I had time for
-    private int hashMethod(K key) {
+/*    private int hashMethod(K key) {
         int hashVal = key.hashCode();
         hashVal %= currCap;
         if (hashVal < 0) hashVal += currCap;
         return hashVal;
-    }
+    }*/
+
+
+
+
     public int sizeArray() {
         return currCap;
     }

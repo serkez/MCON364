@@ -11,6 +11,19 @@ import java.util.Scanner;
 public class MapExample {
     public static void main(String[] args) throws FileNotFoundException {
         ArrayMap<String, Integer> map = new ArrayMap<>();
+        Scanner input = new Scanner(System.in);
+        String inp;
+        //here got user input and then set the hash
+        //if -else is just for validation, not for fuctionality
+        System.out.println("Enter '1' for simple hash function and '2' for complex:");
+        inp = input.next();
+        if(inp.equals("1") || inp.equals("2")){
+            map.setHash(inp);
+        }
+        else{
+            System.out.println("Invalid option, defaulting to simple hash function");
+            map.setHash("1");
+        }
         //retreives every word from the book by scanning each word in, and putting it into a string
         Scanner scanner = new Scanner(new File("Hw3HashMap/frankenstein.txt"));
         String book = scanner.useDelimiter("\\A").next();
@@ -38,8 +51,6 @@ public class MapExample {
             }
         }
 
-        Scanner input = new Scanner(System.in);
-        String inp;
         System.out.println("Would you like to:(enter number) \n 0- Exit \n 1- View map(raw) \n 2- view map in descending order of usage \n 3- get the number of unique words \n 4- get the number of unused slots \n 5- get word count for word \n 6- get report");
         do {
             inp = input.next();
